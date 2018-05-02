@@ -1,2 +1,65 @@
-# Chapter 1
-Hello, world!
+# Introduction
+
+We're not going to give you superpowers in this course. Instead, we're going to 
+teach you some great habits that will help you unleash your own superpowers.
+
+> I'm not a great programmer; I'm just a good programmer with great habits. --Kent Beck, inventor of TDD. 
+
+You'll learn how to structure your code as well as your tests so that you can 
+follow the principles of sub-second BDD:
+
+* Easy maintainability by decoupling implementation details from business logic
+* Sub-second feedback for unit tests and full-stack acceptance tests alike
+* Scenarios that describe business rules and processes concisely, without assumption of implementation detail. This is essential in order to achieve approriate decoupling and sound abstractions
+
+The practices that support those principles are:
+
+* Modelling by Example
+* The command-query pattern for acceptance tests
+* No I/O
+* In-process tests
+* Contract tests
+
+# Context-Command-View-Assertion (CCVA)
+
+The CCVA pattern decouples your tests from your application. This enables
+sub-second full stack tests, and significantly reduces test maintenance costs.
+
+## Context 
+This is where you create state.
+There are 3 main stykes for this. They all have pros and cons, and which style 
+you choose depends on your application architecture/style.
+
+### Commands
+This represents something a user (or external system can do). They can be used 
+to set up “past” state. List pros and cons.
+
+### Events
+Describing events that have occurred in the “past”. The events get 
+processed by event processors (projections) and build a read model. Use this if 
+the example describes business process with a temporal character. Example: Recover 
+lost password.
+
+### Read model
+This omits the description of events, and can be more succinct. Use this if the 
+described business rule doesn’t have a temporal aspects. This is often the case 
+for financial calculations. Example: Calculate insurance premium.
+
+## Command 
+This is where you describe an event originating from another system. That other 
+system can be a user interacting with a user interface, like submitting a form. 
+Or it could be an event from a micro service, like “NLP processing completed”.
+
+The command is supposed to run “business logic”, like doing a calculation, or 
+making a devision in a business process. In either case, it should have an 
+observable business outcome.
+
+The view is a data structure or an interface/contract with pure query functions 
+that don’t mutate state.
+
+It acts as a translation layer between “adapter” technologies like user 
+interfaces and web service protocols, and domain-specific contracts. 
+Commands are essential in the decoupling of adapters from business logic, but also 
+in the reuse of scenarios, as we’ll see later.
+
+Assertions compare expected values with values from the view.
